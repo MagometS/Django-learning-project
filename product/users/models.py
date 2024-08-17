@@ -2,6 +2,7 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from product.settings import AUTH_USER_MODEL
 from django.core.validators import MinValueValidator
+from courses.models import Course
 
 class CustomUser(AbstractUser):
     """Кастомная модель пользователя - студента."""
@@ -55,7 +56,18 @@ class Balance(models.Model):
 class Subscription(models.Model):
     """Модель подписки пользователя на курс."""
 
-    # TODO
+    user = models.ForeignKey(
+        AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='subscriptions',
+        verbose_name='Пользователь'
+    )
+    course = models.ForeignKey(
+        Course,
+        on_delete=models.CASCADE,
+        related_name='subscriptions',
+        verbose_name='Курс'
+    )
 
     class Meta:
         verbose_name = 'Подписка'
