@@ -1,5 +1,7 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from product.settings import AUTH_USER_MODEL
+from django.core.validators import MinValueValidator
 
 class CustomUser(AbstractUser):
     """Кастомная модель пользователя - студента."""
@@ -29,7 +31,20 @@ class CustomUser(AbstractUser):
 class Balance(models.Model):
     """Модель баланса пользователя."""
 
-    # TODO
+    user = models.OneToOneField(
+        AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        relsted_name='balance',
+        verbose_name='Пользователь'
+    )
+    amount = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        default=1000,
+        validators=[MinValueValidator(0)],
+        verbose_name='Баланс'
+    )
+
 
     class Meta:
         verbose_name = 'Баланс'
