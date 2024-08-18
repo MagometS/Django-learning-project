@@ -13,6 +13,7 @@ from api.v1.serializers.course_serializer import (CourseSerializer,
 from api.v1.serializers.user_serializer import SubscriptionSerializer
 from courses.models import Course
 from users.models import Subscription
+from rest_framework import generics
 
 
 class LessonViewSet(viewsets.ModelViewSet):
@@ -78,3 +79,15 @@ class CourseViewSet(viewsets.ModelViewSet):
             data=data,
             status=status.HTTP_201_CREATED
         )
+
+
+class AvailableCourseView(generics.ListAPIView):
+        '''Доступные курсы'''
+
+        serializer_class = CourseSerializer
+        permission_classes = (permissions.IsAuthenticated,)
+
+        def get_queryset(self):
+            user = self.request.user
+            purchased_products = Subscription.objects.filter(user=user).values_list('product_id', flat=True)
+            return Course.objects.filter(is_available=True).exclude(id__in=purchased_products)    

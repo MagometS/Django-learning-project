@@ -38,7 +38,7 @@ class Balance(models.Model):
     user = models.OneToOneField(
         AUTH_USER_MODEL,
         on_delete=models.CASCADE,
-        relsted_name='balance',
+        related_name='balance',
         verbose_name='Пользователь'
     )
     amount = models.DecimalField(
