@@ -27,6 +27,9 @@ class CustomUser(AbstractUser):
 
     def __str__(self):
         return self.get_full_name()
+    
+    def has_access_to_course(self, course):
+        return Subscription.objects.filter(user=self, course=course).exists()
 
 
 class Balance(models.Model):
