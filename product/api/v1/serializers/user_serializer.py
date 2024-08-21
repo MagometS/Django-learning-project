@@ -22,5 +22,7 @@ class SubscriptionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Subscription
         fields = (
-            # TODO
+            'id',
+            'user',
+            'course',
         )
